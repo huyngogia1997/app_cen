@@ -1,114 +1,72 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React, {Component} from 'react';
 import {
-  SafeAreaView,
+  AppRegistry,
+  Dimensions,
+  Image,
   StyleSheet,
-  ScrollView,
-  View,
   Text,
-  StatusBar,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import CodePush from 'react-native-code-push';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+class App extends Component<{}> {
+  onButtonPress() {
+    CodePush.sync({
+      updateDialog: true,
+      installMode: CodePush.InstallMode.IMMEDIATE,
+    });
+  }
+  render() {
+    return (
+      <View>
+        <TouchableOpacity onPress={this.onButtonPress}>
+          <Text>Check for updates110</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    paddingTop: 50,
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  image: {
+    margin: 30,
+    width: Dimensions.get('window').width - 100,
+    height: (365 * (Dimensions.get('window').width - 100)) / 651,
   },
-  body: {
-    backgroundColor: Colors.white,
+  messages: {
+    marginTop: 30,
+    textAlign: 'center',
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  restartToggleButton: {
+    color: 'yellow',
+    fontSize: 17,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+  syncButton: {
+    color: 'yellow',
+    fontSize: 17,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 20,
   },
 });
+
+/**
+ * Configured with a MANUAL check frequency for easy testing. For production apps, it is recommended to configure a
+ * different check frequency, such as ON_APP_START, for a 'hands-off' approach where CodePush.sync() does not
+ * need to be explicitly called. All options of CodePush.sync() are also available in this decorator.
+ */
+let codePushOptions = {checkFrequency: CodePush.CheckFrequency.MANUAL};
+
+App = CodePush(codePushOptions)(App);
 
 export default App;
