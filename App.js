@@ -22,7 +22,7 @@ class App extends Component<{}> {
     return (
       <View>
         <TouchableOpacity onPress={this.onButtonPress}>
-          <Text>Check for updates110</Text>
+          <Text>Version 1.0</Text>
         </TouchableOpacity>
       </View>
     );
